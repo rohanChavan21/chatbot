@@ -1,4 +1,4 @@
-from langchain.vectorstores import FAISS
+from langchain_community.vectorstores import FAISS
 from langchain.vectorstores.utils import DistanceStrategy
 from utils.embeddings import embeddings
 from langchain_core.prompts import PromptTemplate ,format_document

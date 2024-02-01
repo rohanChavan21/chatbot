@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from langchain.vectorstores import FAISS
+from langchain_community.vectorstores import FAISS
 from langchain_core.prompts import PromptTemplate ,format_document
 from utils.embeddings import embeddings
 
