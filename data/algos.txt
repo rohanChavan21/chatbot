@@ -65,4 +65,4 @@ Algorithm 6: FF Churning Pv2
 - Cases:
   - Upon part fills, the algo must place the same amount of lots at the target price and allocate the same number of lots, as main fill qty, at the stoploss price.
   - Rest of the orders should be managed by the algo.
-  - Algo will work as per logic at the price it is shifted to. If Stop(ticks) parameter is set as 0, it will not send a stop order entirely.
+  - Algo will work as per logic at the price it is shifted to. If Stop(ticks) parameter is set as 0, it will not send a stop order entirely.

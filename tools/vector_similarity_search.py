@@ -2,6 +2,7 @@ from langchain.pydantic_v1 import BaseModel, Field
 from langchain.tools import BaseTool, tool
 from typing import Type, Optional
 from vectorstore.vectorstore import similarity_search_from_vectorstore
+import requests, json
 from langchain.callbacks.manager import (
     AsyncCallbackManagerForToolRun,
     CallbackManagerForToolRun,
@@ -13,14 +14,26 @@ class SearchInput(BaseModel):
 
 class VectorSimilaritySearchTool(BaseTool):
     name = "context_search"
-    description = "use only when need to get context and to search about trading algorithms and look up information about Futures First"
+    description = "use only when need to get context and to search about trading algorithms and look up information about Futures First. Don't use when you can answer from previous conversation can don't need addtional data."
     args_schema: Type[BaseModel] = SearchInput
 
     def _run(
             self, query: str, num: int, run_manager: Optional[CallbackManagerForToolRun] = None
     ) -> str:
         """Use the tool"""
-        return similarity_search_from_vectorstore(query=query, k=num)
+        # return similarity_search_from_vectorstore(query=query, k=num)
+        url = 'http://localhost:5000/similarity_search'
+        payload = {'query': query, 'k': num}
+        headers = {'Content-Type': 'application/json'}
+
+        response = requests.post(url, data=json.dumps(payload), headers=headers)
+        final_response = response.json()
+        print(f"Query to Vector DB: {final_response['query']} \n Number of documents retrieved: {final_response['n']}")
+        if response.status_code == 200:
+            return final_response["context"]
+        else:
+            print(f"Error: {response.status_code}")
+            return "Cannot Fetch documents. Say you don't know this and can come back to it again."
     
     async def _arun(
         self,
