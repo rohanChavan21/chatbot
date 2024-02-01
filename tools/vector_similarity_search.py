@@ -1,7 +1,6 @@
 from langchain.pydantic_v1 import BaseModel, Field
 from langchain.tools import BaseTool, tool
 from typing import Type, Optional
-from vectorstore.vectorstore import similarity_search_from_vectorstore
 import requests, json
 from langchain.callbacks.manager import (
     AsyncCallbackManagerForToolRun,
@@ -10,7 +9,7 @@ from langchain.callbacks.manager import (
 
 class SearchInput(BaseModel):
     query: str = Field(description="query to lookup from the knowledge base and get context. should contain all the keywords to lookup in the knowledge base")
-    num: int = Field(description="Number of entries to lookup. Consider one algo as one entry and determine requirement. Knoeledge base contains 6 total algos")
+    num: int = Field(description="Number of entries to lookup. Consider one algo as one entry and determine requirement. Knowledge base contains 6 total algos")
 
 class VectorSimilaritySearchTool(BaseTool):
     name = "context_search"
@@ -18,7 +17,10 @@ class VectorSimilaritySearchTool(BaseTool):
     args_schema: Type[BaseModel] = SearchInput
 
     def _run(
-            self, query: str, num: int, run_manager: Optional[CallbackManagerForToolRun] = None
+            self, 
+            query: str, 
+            num: int, 
+            run_manager: Optional[CallbackManagerForToolRun] = None
     ) -> str:
         """Use the tool"""
         # return similarity_search_from_vectorstore(query=query, k=num)
