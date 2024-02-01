@@ -13,7 +13,7 @@ class SearchInput(BaseModel):
 
 class VectorSimilaritySearchTool(BaseTool):
     name = "context_search"
-    description = "use only when need to get context and to search about trading algorithms and look up information about Futures First. Don't use when you can answer from previous conversation can don't need addtional data."
+    description = "use only when need to get context and to search about trading algorithms and look up information about Futures First. Don't use when you can answer from previous conversations are sufficient enough."
     args_schema: Type[BaseModel] = SearchInput
 
     def _run(
@@ -35,7 +35,7 @@ class VectorSimilaritySearchTool(BaseTool):
             return final_response["context"]
         else:
             print(f"Error: {response.status_code}")
-            return "Cannot Fetch documents. Say you don't know this and can come back to it again."
+            return "Cannot Fetch documents."
     
     async def _arun(
         self,
