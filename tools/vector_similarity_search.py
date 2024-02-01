@@ -9,11 +9,11 @@ from langchain.callbacks.manager import (
 
 class SearchInput(BaseModel):
     query: str = Field(description="query to lookup from the knowledge base and get context. should contain all the keywords to lookup in the knowledge base")
-    num: int = Field(description="Number of entries to lookup. Consider one algo as one entry and determine requirement. Knowledge base contains 6 total algos")
+    num: int = Field(description="Number of entries to lookup. Consider one algo as one entry and determine requirement. Knowledge base contains 6 total algos. Avoid fetching all documents unless absolutely needed.")
 
 class VectorSimilaritySearchTool(BaseTool):
     name = "context_search"
-    description = "use only when need to get context and to search about trading algorithms and look up information about Futures First. Don't use when you can answer from previous conversations are sufficient enough."
+    description = "use when need to get context and to search about trading algorithms and parameters and look up information about Futures First. Don't use conversation history is sufficient enough."
     args_schema: Type[BaseModel] = SearchInput
 
     def _run(
