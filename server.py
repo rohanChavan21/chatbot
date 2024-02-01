@@ -34,4 +34,4 @@ def similarity_search():
 
     return jsonify(response)
 
-app.run(debug=True)
+app.run(port=5000)

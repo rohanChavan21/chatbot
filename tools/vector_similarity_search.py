@@ -8,7 +8,7 @@ from langchain.callbacks.manager import (
 )
 
 class SearchInput(BaseModel):
-    query: str = Field(description="query to lookup from the knowledge base and get context. should contain all the keywords to lookup in the knowledge base")
+    query: str = Field(description="query to retrieve context from the knowledge base. should contain all the keywords to lookup in the knowledge base")
     num: int = Field(description="Number of entries to lookup. Consider one algo as one entry and determine requirement. Knowledge base contains 6 total algos. Avoid fetching all documents unless absolutely needed.")
 
 class VectorSimilaritySearchTool(BaseTool):
