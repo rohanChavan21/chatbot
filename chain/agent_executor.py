@@ -40,6 +40,8 @@ def get_user_response(query: str, chain, config):
 
     result = chain.invoke({
         "input": query,
-    }, config=config)
+    }, 
+    config=config
+    )
     return result['output']
     
