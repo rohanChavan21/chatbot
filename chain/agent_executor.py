@@ -1,4 +1,8 @@
+import os
 from langchain.agents import AgentExecutor
+from langchain_core.runnables.history import RunnableWithMessageHistory
+from langchain_community.chat_message_histories import UpstashRedisChatMessageHistory
+from langchain_core.chat_history import BaseChatMessageHistory
 from callbacks.streaming_callback import callbacks
 from utils.functions import get_conversation_history
 from agents.chatbot_agent import initialize_agent
@@ -17,14 +21,25 @@ def create_agent_executor_chain(model_name: str):
         callbacks=callbacks
     )
 
-    return agent_executor
+    chain = RunnableWithMessageHistory(
+        agent_executor,
+        lambda session_id: UpstashRedisChatMessageHistory(
+            session_id=session_id,
+            url='https://eu2-simple-giraffe-31332.upstash.io',
+            token=os.environ.get('UPSTASH_TOKEN'),
+        ),
+        input_messages_key='input',
+        history_messages_key='chat_history'
+    )
 
-def get_user_response(query: str, chain, conversation):
+
+    return chain
+
+def get_user_response(query: str, chain, config):
     """Querying the llm chatbot"""
 
     result = chain.invoke({
-        "chat_history":get_conversation_history(conversation=conversation),
-        "input": query
-    })
+        "input": query,
+    }, config=config)
     return result['output']
     

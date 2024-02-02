@@ -1,14 +1,14 @@
 from dotenv import load_dotenv
 from chain.agent_executor import create_agent_executor_chain, get_user_response
+from vectorstore.vectorstore import *
 # from utils.embeddings import embeddings
 # from utils.text_splitter import get_split_docs
 # from loader.textloader import documents
-from vectorstore.vectorstore import *
 
 load_dotenv()
 
 #Initilize an empty list for simulation of chat memory
-conversation = []
+# conversation = []
 
 #Initializing the Huggingface sentence - transformers embeddings
 # embeddings = embeddings
@@ -30,15 +30,24 @@ conversation = []
 # save_to_local(db=db, index_name="faiss-index")
 
 #Create the agent executor chain
+config = {
+    "configurable": {
+        "session_id": "demo",
+    }
+}
+
 chain = create_agent_executor_chain('gpt-3.5-turbo-1106')
 
 #Generate function to answer user queries
-def generate(query: str):
+def generate(query: str, config):
     """Function to query the llm with the agent executor chain"""
+    response = get_user_response(
+        query=query, 
+        chain=chain, 
+        config=config
+    )
 
-    response = get_user_response(query=query, chain=chain, conversation=conversation)
-
-    conversation.append({'input': query, 'output': response})
+    # conversation.append({'input': query, 'output': response})
 
     return response
 
@@ -46,9 +55,8 @@ def generate(query: str):
 while True:
     user_prompt = input("Enter a prompt:(Type 'exit' to end the conversation): ")
     if user_prompt.strip().lower() == 'exit':
-        conversation = []
         break
 
-    generate(user_prompt)
+    generate(user_prompt, config=config)
     print("\n\n")
     

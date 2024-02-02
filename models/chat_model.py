@@ -6,6 +6,7 @@ def initialize_chat_model(model_name):
     chat_model = ChatOpenAI(
         model=model_name,
         temperature=0.1,
+        max_tokens=512,
         streaming=True,
         callbacks=callbacks
     )
