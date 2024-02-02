@@ -27,6 +27,7 @@ def create_agent_executor_chain(model_name: str):
             session_id=session_id,
             url='https://eu2-simple-giraffe-31332.upstash.io',
             token=os.environ.get('UPSTASH_TOKEN'),
+            ttl=1800
         ),
         input_messages_key='input',
         history_messages_key='chat_history'
