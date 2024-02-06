@@ -8,8 +8,8 @@ from langchain.callbacks.manager import (
 )
 
 class SearchInput(BaseModel):
-    query: str = Field(description="""query to retrieve context from the knowledge base. If user is asking about FF algorithms set equal to \"FF Algorithm Description: Parameters: Cases:\" add to this if you think it is necessary to get more specific context.
-                       else query should contain all the keywords to lookup in the knowledge base""")
+    query: str = Field(description="""query to retrieve context from the knowledge base. If query is about FF algorithms set equal to \" FF Algorithm - Description: - Parameters: - Cases: \" append more keywords to this exact string if it needs to be more specific.
+                       else query should be a sentence containing all the keywords to lookup in the knowledge base""")
     num: int = Field(description="Number of entries to lookup. Consider one algo as one entry and determine requirement. Knowledge base contains 6 total algos. Avoid fetching all documents unless absolutely needed.")
 
 class VectorSimilaritySearchTool(BaseTool):
