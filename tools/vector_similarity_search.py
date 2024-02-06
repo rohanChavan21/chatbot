@@ -8,12 +8,13 @@ from langchain.callbacks.manager import (
 )
 
 class SearchInput(BaseModel):
-    query: str = Field(description="query to retrieve context from the knowledge base. should contain all the keywords to lookup in the knowledge base")
+    query: str = Field(description="""query to retrieve context from the knowledge base. If user is asking about FF algorithms set equal to \"FF Algorithm Description: Parameters: Cases:\" add to this if you think it is necessary to get more specific context.
+                       else query should contain all the keywords to lookup in the knowledge base""")
     num: int = Field(description="Number of entries to lookup. Consider one algo as one entry and determine requirement. Knowledge base contains 6 total algos. Avoid fetching all documents unless absolutely needed.")
 
 class VectorSimilaritySearchTool(BaseTool):
     name = "context_search"
-    description = "use when need to get context and to search about trading algorithms and parameters and look up information about Futures First. Don't use conversation history is sufficient enough."
+    description = "Always use when asked about trading algorithms, abbreviations, parameters and information about Futures First. Don't use if conversation history is sufficient enough to answer."
     args_schema: Type[BaseModel] = SearchInput
 
     def _run(
@@ -31,6 +32,7 @@ class VectorSimilaritySearchTool(BaseTool):
         response = requests.post(url, data=json.dumps(payload), headers=headers)
         final_response = response.json()
         print(f"Query to Vector DB: {final_response['query']} \n Number of documents retrieved: {final_response['n']}")
+        # print(f"Context: {final_response['context']}\n\n")
         if response.status_code == 200:
             return final_response["context"]
         else:

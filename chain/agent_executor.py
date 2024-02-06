@@ -15,7 +15,7 @@ def create_agent_executor_chain(model_name: str):
     agent_executor = AgentExecutor(
         agent=agent,
         tools=[vector_search_tool],
-        # verbose=True,
+        verbose=True,
         max_iterations=5,
         max_execution_time=20.0,
         callbacks=callbacks
