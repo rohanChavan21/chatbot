@@ -8,13 +8,13 @@ from langchain.callbacks.manager import (
 )
 
 class SearchInput(BaseModel):
-    query: str = Field(description="""query to retrieve context from the knowledge base. If query is about FF algorithms set equal to \" FF Algorithm - Description: - Parameters: - Cases: \" append more keywords to this exact string if it needs to be more specific.
-                       else query should be a sentence containing all the keywords to lookup in the knowledge base""")
-    num: int = Field(description="Number of entries to lookup. Consider one algo as one entry and determine requirement. Knowledge base contains 6 total algos. Avoid fetching all documents unless absolutely needed.")
+    query: str = Field(description="""query to retrieve context from the knowledge base. If query is about FF algorithms set equal to \"Algorithm FF - Description: - Parameters: - Cases: \". Append more keywords to this exact string if it needs to be more specific.
+                       else query should be a string containing all the keywords to lookup in the knowledge base""")
+    num: int = Field(description="Number of entries to lookup. Consider one algo as one entry and determine requirement. Knowledge base contains ff algos, company information and trading knowledge. keep it under 10 and as low as possible.")
 
 class VectorSimilaritySearchTool(BaseTool):
     name = "context_search"
-    description = "Always use when asked about trading algorithms, abbreviations, parameters and information about Futures First. Don't use if conversation history is sufficient enough to answer."
+    description = "Always use when asked about trading algorithms, their parameters, abbreviations, trading queries and any information about Futures First. Don't use if conversation history is sufficient enough to answer."
     args_schema: Type[BaseModel] = SearchInput
 
     def _run(

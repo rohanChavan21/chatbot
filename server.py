@@ -5,14 +5,14 @@ from utils.embeddings import embeddings
 
 app = Flask(__name__)
 
-db = FAISS.load_local("faiss_index", embeddings)
+db = FAISS.load_local("faiss_index_MIP", embeddings)
 
 def similarity_search_from_vectorstore(query, k):
     """Retrieve documents from vectorstore by using similarity search"""
 
     documents = db.similarity_search_with_score(
         query=query, 
-        k=k+1,
+        k=k,
     )
     document_prompt = PromptTemplate.from_template("{page_content}")
     context = "\n".join(
@@ -26,11 +26,10 @@ def similarity_search_from_vectorstore(query, k):
 def similarity_search():
     query = request.json.get('query', '')
     k = request.json.get('k', 4)
-    n = k + 1
     context = similarity_search_from_vectorstore(query=query, k=k)
     response = {
         "query": query,
-        "n": n,
+        "n": k,
         "context": context
     }
     print(f"Query to Vector DB: {query} \n Number of documents retrieved: {k}")
