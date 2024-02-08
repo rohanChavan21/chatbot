@@ -1,4 +1,7 @@
 .env
 __pycache__/
 data/
-faiss-index/
+faiss_index/
+faiss_index_JC/
+faiss_index_L2/
+faiss_index_MIP/
